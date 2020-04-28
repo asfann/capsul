@@ -2,22 +2,15 @@ package com.company;
 
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 
 public class MyApplication {
-    // users - a list of users
-    private Scanner sc = new Scanner(System.in);
-    BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
-    File f = new File("C:\\Users\\asfan\\IdeaProjects\\capsula\\src\\com\\company\\db.txt");
+    private static Scanner sc = new Scanner(System.in);
     private User signedUser;
     ArrayList<User> Userrt = new ArrayList<User>();
 
-
-    public MyApplication() throws FileNotFoundException {
-    }
 
     private void addUser(User user) {
         Userrt.add(user);
@@ -41,11 +34,96 @@ public class MyApplication {
         }
     }
 
-    private void userProfile() {
-        System.out.println("Welcome!");
+    private static void userProfile() {
+
+        while (true) {
+            System.out.println("1.Anime");
+            System.out.println("2.Manga");
+            System.out.println("3.Exit");
+            int osu = sc.nextInt();
+            if (osu == 1) Anime();
+            else if (osu == 2) Manga();
+            else logOff();
+        }
     }
 
-    private void logOff() {
+    private static void Manga() {
+        System.out.println("1.Ongoing");
+        System.out.println("2.Finished Reading");
+        System.out.println("3.Not Finished");
+        System.out.println("4.Exit");
+        int jojo = sc.nextInt();
+        if (jojo == 1) Ongoing();
+        else if (jojo == 2) FinishedReading();
+        else if (jojo == 3) Notfinished();
+        else userProfile();
+    }
+
+    private static void Anime() {
+        System.out.println("1.Ongoing");
+        System.out.println("2.Finished Watching");
+        System.out.println("3.Not Finished");
+        System.out.println("4.Exit");
+        int jab = sc.nextInt();
+        if (jab == 1) OngoingA();
+        else if (jab == 2) FinishedWatching();
+        else if (jab == 3) NotA();
+        else userProfile();
+    }
+
+    public static void Ongoing() {
+        System.out.println("Haikyuu");
+        System.out.println("Shokugeki no Souma");
+        System.out.println("Kuroko No Basuke");
+        System.out.println("My Hero Academia");
+        System.out.println("Re zero");
+    }
+
+    public static void OngoingA() {
+        System.out.println("Haikyuu");
+        System.out.println("Shokugeki no Souma");
+        System.out.println("My Hero Academia");
+        System.out.println("Re zero");
+        System.out.println("Boruto");
+        System.out.println("JJBA");
+        System.out.println("Demon slayer");
+    }
+
+    public static void FinishedWatching() {
+        System.out.println("Naruto");
+        System.out.println("Kuroko");
+        System.out.println("Gurren lagann");
+        System.out.println("Code Geass");
+        System.out.println("re life");
+        System.out.println("Kaichou wa Maid sama");
+    }
+
+    public static void Notfinished() {
+        System.out.println("Noragami");
+        System.out.println("Tokyo Ghoul");
+        System.out.println("SAO");
+        System.out.println("Durarara");
+        System.out.println("Kaichou wa Maid sama");
+    }
+
+    public static void NotA() {
+        System.out.println("Noragami");
+        System.out.println("Boruto");
+        System.out.println("Prince Strider");
+        System.out.println("Assasination Classroom");
+        System.out.println("Overlord");
+    }
+
+    public static void FinishedReading() {
+        System.out.println("Naruto");
+        System.out.println("Kuroko");
+        System.out.println("Gurren lagann");
+        System.out.println("Code Geass");
+        System.out.println("re life");
+        System.out.println("JJBA");
+    }
+
+    private static void logOff() {
 
     }
 
@@ -62,30 +140,23 @@ public class MyApplication {
             } else if (choice == 2) {
                 signUp();
             } else {
-                menu();
+                break;
             }
         }
-        // sign in
-        // sign up
     }
 
     private void signIn() throws Exception {
         System.out.println("Enter your username:");
-        String u = sc.next();
-        System.out.println("Enter your password");
-        String pas = sc.next();
-
-        if (CheckPass(pas)) {
-            for (int i = 0; i < Userrt.size(); i++) {
-                User user = Userrt.get(i);
-                if (u.equals(user.getUsername())) {
-                    signedUser = user;
-                }
-            }
+        String u = sc.nextLine();
+        System.out.println("Enter your password:");
+        String pas = sc.nextLine();
+        if (Checker(u, pas)) {
+            User use = new User();
+            Check(use);
+            signedUser = use;
         } else {
-            System.out.println("error");
+            System.out.println("Error");
         }
-
     }
 
 
@@ -100,42 +171,57 @@ public class MyApplication {
         System.out.println("Enter your Username:");
         String us = sc.nextLine();
         n.setUsername(us);
-        if (sUP(n)) {
-            addUser(n);
-            signedUser = n;
-        } else return;
-    }
-
-    private boolean sUP(User n) {
         System.out.println("Enter your password:");
         String p = sc.nextLine();
-        Password nnn = new Password();
-        if (nnn.setPasswordStr(p)) {
-            n.setPassword(nnn);
-            return true;
-        } else {
-            return false;
+        Password pp = new Password();
+        if (pp.setPasswordStr(p)) {
+            n.setPassword(pp);
         }
+        System.out.println("Welcome!");
+        userProfile();
     }
 
 
-    private boolean CheckPass(String password) {
-        if (!Userrt.isEmpty()) {
-            for (int i = 0; i < Userrt.size(); i++) {
-                User user = Userrt.get(i);
-                if (password.equals(user.getPassword().getPasswordStr())) {
-                    return true;
-                }
+    public boolean Checker(String username, String password) throws Exception {
+        for (int i = 0; i < Userrt.size(); i++) {
+            User ck = Userrt.get(i);
+            if (username.equals(ck.getUsername()) && password.equals(ck.getPassword().getPasswordStr())) {
+                return true;
+            } else {
+                return false;
             }
         }
-        return false;
+        return true;
+    }
+
+
+    public void Check(User user) {
+        User ci = new User();
+        for (int i = 0; i < Userrt.size(); i++) {
+            User ce = Userrt.get(i);
+            if (user.equals(ce.getUsername())) {
+                ci = ce;
+            }
+        }
     }
 
     public void start() throws Exception {
         File file = new File("C:\\Users\\asfan\\IdeaProjects\\capsula\\src\\com\\company\\db.txt");
-        Scanner fileScanner = new Scanner(file);
-        // fill userlist from db.txt
-
+        Scanner Scan = new Scanner(file);
+        while (Scan.hasNext()) {
+            String name = Scan.next();
+            String surname = Scan.next();
+            String username = Scan.next();
+            String password = Scan.next();
+            User nm = new User();
+            Password ps = new Password();
+            nm.setName(name);
+            nm.setSurname(surname);
+            nm.setUsername(username);
+            ps.setPasswordStr(password);
+            nm.setPassword(ps);
+            addUser(nm);
+        }
         while (true) {
             System.out.println("Welcome to my application!");
             System.out.println("Select command:");
@@ -148,19 +234,16 @@ public class MyApplication {
                 break;
             }
         }
-
-        // save the userlist to db.txt
     }
 
-    private void saveUserList() {
-        try (FileWriter f1 = new FileWriter(f)) {
-            for (int i = 0; i < Userrt.size(); i++) {
-                f1.write(String.valueOf(Userrt.get(i)) + "/n");
-                f1.flush();
-                f1.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+    private void saveUserList(User username) throws IOException {
+        for (int i = 0; i < Userrt.size(); i++) {
+            username = Userrt.get(i);
+            FileWriter wri = new FileWriter("C:\\Users\\asfan\\IdeaProjects\\capsula\\src\\com\\company\\db.txt");
+            wri.write(username.getId() + " " + username.getPassword() + " " + username.getUsername() + " " + username.getName() + " " + username.getSurname());
         }
     }
 }
+
+
+
