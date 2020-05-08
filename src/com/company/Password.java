@@ -16,7 +16,7 @@ public class Password {
     }
 
     public boolean setPasswordStr(String passwordStr) {
-        if (passwordStr.length() > 9) {
+        if (passwordStr.length() < 9) {
             return false;
         } else {
             for (int i = 0; i < passwordStr.length(); i++) {
@@ -35,6 +35,6 @@ public class Password {
         return true;
     }
 }
-    // passwordStr // it should contain uppercase and lowercase letters and digits
-    // and its length must be more than 9 symbols
+// passwordStr // it should contain uppercase and lowercase letters and digits
+// and its length must be more than 9 symbols
 
